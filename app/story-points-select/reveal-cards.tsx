@@ -13,8 +13,12 @@ export default function RevealCards({
     <div className="flex flex-col justify-center items-center ">
       {storyPointSelected && (
         <>
-          <div className="w-2 p-4 flex justify-center bg-zinc-950 text-slate-200">
-            {visible && storyPointSelected}
+          <div
+            className={`w-2 p-4 flex justify-center bg-zinc-950 ${
+              visible ? "text-slate-200" : "text-opacity-0"
+            }`}
+          >
+            {storyPointSelected}
           </div>
           <button onClick={() => setVisible(!visible)}>
             <p>revelar cartas</p>
