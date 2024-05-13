@@ -15,7 +15,17 @@ app.prepare().then(() => {
   const io = new Server(httpServer);
 
   io.on("connection", (socket) => {
-    // ...
+    socket.on("createRoom", (roomName) => {
+      socket.join(roomName);
+
+      console.log(roomName);
+    });
+
+    socket.on("joinRoom", (roomName) => {
+      socket.join(roomName);
+
+      console.log(roomName);
+    });
   });
 
   httpServer
