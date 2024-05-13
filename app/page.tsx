@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { socket } from "./socket";
 import { useState } from "react";
 
@@ -10,6 +11,8 @@ const ACTIONS: Action[] = ["createRoom", "joinRoom"];
 export default function Home() {
   const [actionSelected, setActionSelected] = useState<Action>("createRoom");
   const [roomName, setRoomName] = useState("");
+
+  const { push } = useRouter();
 
   const handleRoomAction = (action: Action, roomName: string) =>
     socket.emit(action, roomName);
@@ -37,6 +40,7 @@ export default function Home() {
         <button
           onClick={() => {
             handleRoomAction(actionSelected, roomName);
+            push("story-points-select/" + roomName);
           }}
         >
           criar ou entrar
