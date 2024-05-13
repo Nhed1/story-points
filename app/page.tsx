@@ -1,15 +1,15 @@
 "use client";
-import { useState } from "react";
-import StoryPointsSelect from "./story-points-select/story-points.select";
-import RevealCards from "./story-points-select/reveal-cards";
+
+import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [storyPointSelected, setStoryPointSelected] = useState<number>();
-
+  const router = useRouter();
   return (
     <div className="flex flex-col justify-center items-center w-full bg-slate-200 h-screen">
-      <RevealCards storyPointSelected={storyPointSelected} />
-      <StoryPointsSelect setStoryPointSelected={setStoryPointSelected} />
+      <button onClick={() => router.push("story-points-select")}>
+        go to story points
+      </button>
     </div>
   );
 }
