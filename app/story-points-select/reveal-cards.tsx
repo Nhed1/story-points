@@ -1,23 +1,30 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { StoryPoint } from "./interfaces";
 import { socket } from "../socket";
 
-interface StoryPoint {
-  id: number;
-  selectedPoint: number;
-}
-export default function RevealCards({ roomName }: { roomName: string }) {
-  const [storyPoints, setStoryPoints] = useState<StoryPoint[]>([]);
+export default function RevealCards({
+  storyPoints,
+}: {
+  storyPoints: StoryPoint[];
+}) {
   const [visible, setVisible] = useState(false);
 
-  const handleGetStoryPoints = () => {
-    socket.emit("getStoryPoints", roomName);
-
-    socket.on("storyPoints", (points) => {
-      setStoryPoints(points);
+  useEffect(() => {
+    socket.on("cardsVisible", (showCards) => {
+      setVisible(showCards);
     });
-  };
 
+    return () => {
+      socket.off("cardsVisible");
+    };
+  }, []);
+
+  const handleToggleVisible = () => {
+    const newVisibility = !visible;
+    setVisible(newVisibility);
+    socket.emit("toggleVisibleCards", newVisibility);
+  };
   return (
     <div className="flex flex-col justify-center items-center ">
       <>
@@ -35,8 +42,7 @@ export default function RevealCards({ roomName }: { roomName: string }) {
         </div>
         <button
           onClick={() => {
-            handleGetStoryPoints();
-            setVisible(!visible);
+            handleToggleVisible();
           }}
         >
           <p>revelar cartas</p>

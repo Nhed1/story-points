@@ -1,12 +1,21 @@
 "use client";
 
 import { socket } from "../socket";
+import { HandleGetStoryPoints } from "./interfaces";
 
 const FIBONACCI_NUMBERS = [1, 2, 3, 5, 8, 13, 21, 34, 55];
 
-export default function StoryPointsSelect({ roomName }: { roomName: string }) {
+export default function StoryPointsSelect({
+  roomName,
+  handleGetStoryPoints,
+}: {
+  roomName: string;
+  handleGetStoryPoints: HandleGetStoryPoints;
+}) {
   const handleStoryPointSelection = (selectedPoint: number) => {
     socket.emit("registerStoryPoint", selectedPoint, roomName);
+
+    handleGetStoryPoints();
   };
 
   return (

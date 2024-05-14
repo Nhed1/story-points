@@ -7,6 +7,7 @@ const hostname = "localhost";
 const port = 3000;
 
 const roomStoryPoints = {};
+let showCards = false;
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
@@ -42,6 +43,10 @@ app.prepare().then(() => {
 
     socket.on("getStoryPoints", (roomName) => {
       socket.emit("storyPoints", roomStoryPoints[roomName]);
+    });
+
+    socket.on("toggleVisibleCards", (isVisible) => {
+      socket.broadcast.emit("cardsVisible", isVisible);
     });
   });
 
