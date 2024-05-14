@@ -2,8 +2,12 @@
 import { useState } from "react";
 import { socket } from "../socket";
 
+interface StoryPoint {
+  id: number;
+  selectedPoint: number;
+}
 export default function RevealCards({ roomName }: { roomName: string }) {
-  const [storyPoints, setStoryPoints] = useState<number[]>([]);
+  const [storyPoints, setStoryPoints] = useState<StoryPoint[]>([]);
   const [visible, setVisible] = useState(false);
 
   const handleGetStoryPoints = () => {
@@ -25,7 +29,7 @@ export default function RevealCards({ roomName }: { roomName: string }) {
                 visible ? "text-slate-200" : "text-opacity-0"
               }`}
             >
-              {storyPoint}
+              {storyPoint.selectedPoint}
             </div>
           ))}
         </div>

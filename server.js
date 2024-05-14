@@ -32,12 +32,15 @@ app.prepare().then(() => {
         roomStoryPoints[roomName] = [];
       }
 
-      roomStoryPoints[roomName].push(selectedPoint);
+      const user = roomStoryPoints[roomName].find(({ id }) => socket.id === id);
+      if (user) {
+        user.selectedPoint = selectedPoint;
+      } else {
+        roomStoryPoints[roomName].push({ selectedPoint, id: socket.id });
+      }
     });
 
     socket.on("getStoryPoints", (roomName) => {
-      console.log(roomName);
-      console.log(roomStoryPoints);
       socket.emit("storyPoints", roomStoryPoints[roomName]);
     });
   });
