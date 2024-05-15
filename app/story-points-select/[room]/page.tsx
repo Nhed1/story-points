@@ -12,13 +12,13 @@ export default function Page({ params }: { params: { room: string } }) {
     socket.emit("getStoryPoints", params.room);
 
     socket.on("storyPoints", (points) => {
-      setStoryPoints(points);
+      if (points) setStoryPoints(points);
     });
   };
 
   useEffect(() => {
     socket.on("storyPoints", (points) => {
-      setStoryPoints(points);
+      if (points) setStoryPoints(points);
     });
 
     return () => {
@@ -31,13 +31,14 @@ export default function Page({ params }: { params: { room: string } }) {
   }, [params.room, storyPoints]);
 
   return (
-    <div className="flex flex-col justify-center items-center w-full bg-slate-200 h-screen">
-      <h2>{params.room}</h2>
-      <RevealCards storyPoints={storyPoints} />
-      <StoryPointsSelect
-        roomName={params.room}
-        handleGetStoryPoints={handleGetStoryPoints}
-      />
+    <div className="flex flex-col justify-around items-center w-full bg-slate-200 h-screen">
+      <div>
+        <RevealCards storyPoints={storyPoints} />
+        <StoryPointsSelect
+          roomName={params.room}
+          handleGetStoryPoints={handleGetStoryPoints}
+        />
+      </div>
     </div>
   );
 }

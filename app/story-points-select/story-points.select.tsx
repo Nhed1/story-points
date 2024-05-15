@@ -1,5 +1,6 @@
 "use client";
 
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { socket } from "../socket";
 import { HandleGetStoryPoints } from "./interfaces";
 
@@ -21,18 +22,24 @@ export default function StoryPointsSelect({
   return (
     <div>
       <fieldset className="flex flex-initial gap-6 ">
-        {FIBONACCI_NUMBERS.map((number) => (
-          <div key={number} className="flex gap-2">
-            <input
-              type="radio"
-              id={String(number)}
-              name="fibonacci"
-              value={String(number)}
-              onChange={() => handleStoryPointSelection(number)}
-            />
-            <label htmlFor={String(number)}>{number}</label>
-          </div>
-        ))}
+        <ToggleGroup
+          variant="default"
+          type="single"
+          onValueChange={(value: string) =>
+            handleStoryPointSelection(Number(value))
+          }
+        >
+          {FIBONACCI_NUMBERS.map((number) => (
+            <div key={number} className="flex gap-2">
+              <ToggleGroupItem
+                value={String(number)}
+                className="block max-w-sm bg-black text-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+              >
+                {number}
+              </ToggleGroupItem>
+            </div>
+          ))}
+        </ToggleGroup>
       </fieldset>
     </div>
   );

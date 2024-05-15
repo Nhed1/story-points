@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { StoryPoint } from "./interfaces";
 import { socket } from "../socket";
+import { Button } from "@/components/ui/button";
 
 export default function RevealCards({
   storyPoints,
@@ -26,8 +27,8 @@ export default function RevealCards({
     socket.emit("toggleVisibleCards", newVisibility);
   };
   return (
-    <div className="flex flex-col justify-center items-center ">
-      <>
+    <div className="flex flex-col justify-center items-center mb-6">
+      <div className="flex flex-col gap-4 items-center">
         <div className="flex gap-4">
           {storyPoints.map((storyPoint, index) => (
             <div
@@ -40,14 +41,15 @@ export default function RevealCards({
             </div>
           ))}
         </div>
-        <button
+        <Button
+          className="max-w-28"
           onClick={() => {
             handleToggleVisible();
           }}
         >
-          <p>revelar cartas</p>
-        </button>
-      </>
+          revelar cartas
+        </Button>
+      </div>
     </div>
   );
 }
