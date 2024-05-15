@@ -19,6 +19,7 @@ export default function Home() {
     defaultValues: {
       roomName: "",
       actionSelected: "createRoom",
+      user: "",
     },
   });
 
@@ -34,18 +35,39 @@ export default function Home() {
       <h1 className="mb-4 text-lg font-semibold">Story Point APP</h1>
       <Form {...form}>
         <div className="flex flex-col">
-          <FormField
-            control={form.control}
-            name="roomName"
-            render={({ field }) => (
-              <Input
-                type="text"
-                placeholder="criar ou entrar em uma sala"
-                {...field}
-              />
-            )}
-          />
+          <div className="flex flex-col gap-2">
+            <FormField
+              control={form.control}
+              name="roomName"
+              rules={{
+                required: {
+                  message: "obrigatório",
+                  value: true,
+                },
+              }}
+              render={({ field }) => (
+                <Input
+                  type="text"
+                  placeholder="criar ou entrar em uma sala"
+                  {...field}
+                />
+              )}
+            />
 
+            <FormField
+              control={form.control}
+              name="user"
+              rules={{
+                required: {
+                  message: "obrigatório",
+                  value: true,
+                },
+              }}
+              render={({ field }) => (
+                <Input type="text" placeholder="nome do usuário" {...field} />
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="actionSelected"
@@ -70,8 +92,13 @@ export default function Home() {
           />
 
           <Button
+            type="submit"
             className="mt-6"
-            onClick={() => {
+            onClick={async () => {
+              const result = await form.trigger();
+
+              if (!result) return;
+
               const actionSelected = form.getValues("actionSelected") as Action;
               const roomName = form.getValues("roomName");
 
@@ -81,6 +108,11 @@ export default function Home() {
           >
             {ACTIONS_PORTUGUESE[actionSelectedWatch === "createRoom" ? 0 : 1]}
           </Button>
+          {(form.formState.errors.roomName || form.formState.errors.user) && (
+            <>
+              <p>os campos devem ser preenchidos</p>
+            </>
+          )}
         </div>
       </Form>
     </div>

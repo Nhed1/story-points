@@ -12,20 +12,25 @@ let showCards = false;
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
 
+const handleRoom = (socket, roomName, user) => {
+  socket.join(roomName);
+
+  roomStoryPoints[roomName] = [];
+  roomStoryPoints[roomName].push({ id: socket.id, user });
+};
+
 app.prepare().then(() => {
   const httpServer = createServer(handler);
 
   const io = new Server(httpServer);
 
   io.on("connection", (socket) => {
-    socket.on("createRoom", (roomName) => {
-      socket.join(roomName);
-
-      roomStoryPoints[roomName] = [];
+    socket.on("createRoom", (roomName, user) => {
+      handleRoom(socket, roomName, user);
     });
 
-    socket.on("joinRoom", (roomName) => {
-      socket.join(roomName);
+    socket.on("joinRoom", (roomName, user) => {
+      handleRoom(socket, roomName, user);
     });
 
     socket.on("registerStoryPoint", (selectedPoint, roomName) => {
