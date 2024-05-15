@@ -14,6 +14,7 @@ export default function StoryPointsSelect({
   handleGetStoryPoints: HandleGetStoryPoints;
 }) {
   const handleStoryPointSelection = (selectedPoint: number) => {
+    console.log(selectedPoint);
     socket.emit("registerStoryPoint", selectedPoint, roomName);
 
     handleGetStoryPoints();

@@ -33,7 +33,16 @@ app.prepare().then(() => {
         roomStoryPoints[roomName] = [];
       }
 
+      if (!selectedPoint) {
+        roomStoryPoints[roomName] = roomStoryPoints[roomName].filter(
+          (item) => item.id !== socket.id
+        );
+
+        return;
+      }
+
       const user = roomStoryPoints[roomName].find(({ id }) => socket.id === id);
+
       if (user) {
         user.selectedPoint = selectedPoint;
       } else {
