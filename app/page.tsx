@@ -25,8 +25,8 @@ export default function Home() {
 
   const { push } = useRouter();
 
-  const handleRoomAction = (action: Action, roomName: string) =>
-    socket.emit(action, roomName);
+  const handleRoomAction = (action: Action, roomName: string, user: string) =>
+    socket.emit(action, roomName, user);
 
   const actionSelectedWatch = form.watch("actionSelected");
 
@@ -101,8 +101,9 @@ export default function Home() {
 
               const actionSelected = form.getValues("actionSelected") as Action;
               const roomName = form.getValues("roomName");
+              const user = form.getValues("user");
 
-              handleRoomAction(actionSelected, roomName);
+              handleRoomAction(actionSelected, roomName, user);
               push("story-points-select/" + roomName);
             }}
           >
