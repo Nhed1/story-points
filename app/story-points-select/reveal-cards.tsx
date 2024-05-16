@@ -32,16 +32,17 @@ export default function RevealCards({
   return (
     <div className="flex flex-col justify-center items-center mb-6">
       <div className="flex flex-col gap-4 items-center">
-        <div className="flex">
-          {storyPoints.map((storyPoint, index) => (
-            <Card
-              key={index}
-              selectedPoint={storyPoint.selectedPoint}
-              username="teste"
-              visible={visible}
-            />
-          ))}
-        </div>
+        {visible && (
+          <div className="flex">
+            {storyPoints.map((storyPoint, index) => (
+              <Card
+                key={index}
+                selectedPoint={storyPoint.selectedPoint}
+                username="teste"
+              />
+            ))}
+          </div>
+        )}
         <Button
           className="max-w-28"
           onClick={() => {
