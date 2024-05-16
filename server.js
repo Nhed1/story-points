@@ -15,6 +15,7 @@ const handler = app.getRequestHandler();
 const handleRoom = (socket, roomName, user) => {
   socket.join(roomName);
 
+  socket.roomName = roomName;
   roomStoryPoints[roomName] = [];
   roomStoryPoints[roomName].push({ id: socket.id, user });
 };
@@ -25,6 +26,20 @@ app.prepare().then(() => {
   const io = new Server(httpServer);
 
   io.on("connection", (socket) => {
+    socket.on("disconnect", function () {
+      const roomName = socket.roomName;
+
+      roomStoryPoints[roomName] = roomStoryPoints[roomName].filter(
+        (item) => item.id !== socket.id
+      );
+
+      console.log("user disconnected");
+    });
+
+    socket.on("connect", function () {
+      console.log("user connected");
+    });
+
     socket.on("createRoom", (roomName, user) => {
       handleRoom(socket, roomName, user);
     });
