@@ -12,8 +12,6 @@ export default function RevealCards({
 }) {
   const [visible, setVisible] = useState(false);
 
-  console.log(storyPoints);
-
   useEffect(() => {
     socket.on("cardsVisible", (showCards) => {
       setVisible(showCards);
@@ -38,7 +36,7 @@ export default function RevealCards({
               <Card
                 key={index}
                 selectedPoint={storyPoint.selectedPoint}
-                username="teste"
+                username={storyPoint.user}
               />
             ))}
           </div>

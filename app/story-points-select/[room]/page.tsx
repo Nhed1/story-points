@@ -17,7 +17,7 @@ export default function Page({ params }: { params: { room: string } }) {
   };
 
   useEffect(() => {
-    socket.on("storyPoints", (points) => {
+    socket.on("storyPoints", (points: StoryPoint[]) => {
       if (points) setStoryPoints(points);
     });
 
