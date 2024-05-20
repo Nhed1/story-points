@@ -12,7 +12,7 @@ export default function Card({ selectedPoint, username }: ICard) {
         <p className="font-semibold text-lg text-white">{selectedPoint}</p>
       </div>
 
-      <p className="">{username}</p>
+      <p className="">{username || "---"}</p>
     </div>
   );
 }

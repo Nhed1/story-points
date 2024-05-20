@@ -16,7 +16,12 @@ const handleRoom = (socket, roomName, user) => {
   socket.join(roomName);
 
   socket.roomName = roomName;
-  roomStoryPoints[roomName] = [];
+  socket.name = user;
+
+  if (!roomStoryPoints[roomName]) {
+    roomStoryPoints[roomName] = [];
+  }
+
   roomStoryPoints[roomName].push({ id: socket.id, user });
 };
 
@@ -66,7 +71,11 @@ app.prepare().then(() => {
       if (user) {
         user.selectedPoint = selectedPoint;
       } else {
-        roomStoryPoints[roomName].push({ selectedPoint, id: socket.id });
+        roomStoryPoints[roomName].push({
+          selectedPoint,
+          id: socket.id,
+          name: socket.name,
+        });
       }
     });
 
