@@ -8,6 +8,8 @@ import { StoryPoint } from "../interfaces";
 export default function Page({ params }: { params: { room: string } }) {
   const [storyPoints, setStoryPoints] = useState<StoryPoint[]>([]);
 
+  console.log(storyPoints);
+
   const handleGetStoryPoints = () => {
     socket.emit("getStoryPoints", params.room);
 

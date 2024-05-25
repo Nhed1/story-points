@@ -74,7 +74,7 @@ app.prepare().then(() => {
         roomStoryPoints[roomName].push({
           selectedPoint,
           id: socket.id,
-          name: socket.name,
+          user: socket.name,
         });
       }
     });
