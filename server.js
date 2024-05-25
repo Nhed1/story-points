@@ -22,6 +22,7 @@ const handleRoom = (socket, roomName, user) => {
     roomStoryPoints[roomName] = [];
   }
 
+  emitUsersInRoom(roomName);
   roomStoryPoints[roomName].push({ id: socket.id, user });
 };
 
@@ -29,6 +30,21 @@ app.prepare().then(() => {
   const httpServer = createServer(handler);
 
   const io = new Server(httpServer);
+
+  const emitUsersInRoom = (roomName) => {
+    const room = io.sockets.adapter.rooms.get(roomName);
+    if (room) {
+      const users = Array.from(room)
+        .map((socketId) => {
+          const userSocket = io.sockets.sockets.get(socketId);
+          return userSocket ? userSocket.name : null;
+        })
+        .filter(Boolean);
+      io.to(roomName).emit("usersInRoom", users);
+    } else {
+      io.to(roomName).emit("usersInRoom", []);
+    }
+  };
 
   io.on("connection", (socket) => {
     socket.on("disconnect", function () {
@@ -85,6 +101,10 @@ app.prepare().then(() => {
 
     socket.on("toggleVisibleCards", (isVisible) => {
       socket.broadcast.emit("cardsVisible", isVisible);
+    });
+
+    socket.on("getUsersInRoom", (roomName) => {
+      emitUsersInRoom(roomName);
     });
   });
 

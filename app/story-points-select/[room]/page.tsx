@@ -4,11 +4,10 @@ import RevealCards from "../reveal-cards";
 import StoryPointsSelect from "../story-points.select";
 import { socket } from "@/app/socket";
 import { StoryPoint } from "../interfaces";
+import { Users } from "../users";
 
 export default function Page({ params }: { params: { room: string } }) {
   const [storyPoints, setStoryPoints] = useState<StoryPoint[]>([]);
-
-  console.log(storyPoints);
 
   const handleGetStoryPoints = () => {
     socket.emit("getStoryPoints", params.room);
@@ -35,6 +34,7 @@ export default function Page({ params }: { params: { room: string } }) {
   return (
     <div className="flex flex-col justify-around items-center w-full bg-slate-200 h-screen">
       <div>
+        <Users roomName={params.room} />
         <RevealCards storyPoints={storyPoints} />
         <StoryPointsSelect
           roomName={params.room}
